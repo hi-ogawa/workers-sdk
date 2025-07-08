@@ -1,6 +1,8 @@
 import dedent from "ts-dedent";
 import { expect, test, vi } from "vitest";
 import { isBuild, serverLogs } from "../../../__test-utils__";
+import path from "node:path";
+import fs from "node:fs"
 
 test.skipIf(isBuild)(
 	"should display warnings if nodejs_compat is missing",
@@ -16,3 +18,10 @@ test.skipIf(isBuild)(
 		});
 	}
 );
+
+test.runIf(isBuild)(
+	"tree-shake unused nodejs builtin",
+() => {
+	const content = fs.readFileSync(path.join(import.meta.dirname, "../../dist/worker-warnings/worker/index.js"), "utf-8");
+	expect(content).not.toContain("perf_hooks");
+})

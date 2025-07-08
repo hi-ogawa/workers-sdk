@@ -848,7 +848,7 @@ export function cloudflare(pluginConfig: PluginConfig = {}): vite.Plugin[] {
 													nodeJsCompatWarnings?.registerImport(path, importer);
 													// Mark this path as external to avoid messy unwanted resolve errors.
 													// It will fail at runtime but we will log warnings to the user.
-													return { path, external: true };
+													return { path, external: true, sideEffects: false };
 												}
 											);
 										},
@@ -893,6 +893,7 @@ export function cloudflare(pluginConfig: PluginConfig = {}): vite.Plugin[] {
 						return {
 							id: source,
 							external: true,
+							moduleSideEffects: false,
 						};
 					}
 				}
